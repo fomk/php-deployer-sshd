@@ -1,0 +1,21 @@
+#!/bin/sh
+set -e
+
+if [[ ! -z "$COMPOSER_GITHUB_TOKEN" ]]
+then
+  composer config --global github-oauth.github.com "$COMPOSER_GITHUB_TOKEN"
+fi
+
+if ls /etc/ssh/ssh_host_* 1> /dev/null 2>&1; then
+    echo "Host keys exist"
+else
+    echo "Generating host keys"
+    mkdir -p /etc/ssh
+    ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa -b 4096
+    ssh-keygen -f /etc/ssh/ssh_host_dsa_key -t dsa -N ''
+    ssh-keygen -f /etc/ssh/ssh_host_ecdsa_key -t ecdsa -b 521
+    ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -t ed25519 -N ''
+fi
+
+exec "$@"
+
