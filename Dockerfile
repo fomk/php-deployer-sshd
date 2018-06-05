@@ -24,6 +24,7 @@ RUN set -xe \
         git \
         ${PHPIZE_DEPS} \
         postgresql-dev \
+        zlib-dev \
     && docker-php-ext-install pdo pdo_pgsql opcache zip \
     && docker-php-ext-enable pdo pdo_pgsql opcache zip \
     && apk del \
